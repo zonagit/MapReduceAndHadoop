@@ -1,0 +1,28 @@
+To run the different mains from eclipse create a run/debug
+configuration then enter arguments for command line.
+
+The arguments for OnePassMatrixMultiplyMain.java
+and TwoPassMatrixMultiplyMain.java are the dimensions
+of the 2 matrices M (IxK) and N (KxJ) and whether debugging
+should be enabled or not (if debug is on it will print out 
+information along the different stages of the map reduce 
+pipeline)
+ 
+So enter say for the product of a 2x3 times a 3x2 matrix
+
+2 3 2 true
+
+To create a jar file from this project do from within 
+Eclipse
+
+Right Click the project->Export Java Jar file->Enter location
+and name of jar
+
+To run one of the mains in the jar in a machine with hadoop 
+installed type
+
+./bin/hadoop jar jarname.jar OnePassMatrixMultiplyMain 2 3 2 true
+
+or
+
+./bin/hadoop jar jarname.jar TwoPassMatrixMultiplyMain 2 3 2 true

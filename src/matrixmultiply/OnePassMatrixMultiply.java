@@ -1,8 +1,6 @@
+package matrixmultiply;
 import java.io.IOException;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map.Entry;
+import java.util.HashMap;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
@@ -77,6 +75,12 @@ public class OnePassMatrixMultiply
 					k = key.col;
 					outputKey.set(i + "," + j);
 					outputValue.set("M," + k + "," + value);
+					context.write(outputKey,outputValue);
+					if (debug)
+					{
+						System.out.println(matrixM ? "M matrix":"N matrix");
+						System.out.println("Map output:key=" +outputKey+" value="+outputValue);
+					}
 				}				
 			}
 			else
@@ -88,97 +92,104 @@ public class OnePassMatrixMultiply
 					j = key.col;
 					outputKey.set(i + "," + j);
 					outputValue.set("N," + k + "," + value);
+					context.write(outputKey,outputValue);
+					if (debug)
+					{
+						System.out.println(matrixM ? "M matrix":"N matrix");
+						System.out.println("Map output:key=" +outputKey+" value="+outputValue);
+					}
 				}
-			}
-			try
-			{
-				context.write(outputKey,outputValue);
-				if (debug)
-				{
-					System.out.println(matrixM ? "M matrix":"N matrix");
-					System.out.println("Map output:key=" +outputKey+" value="+outputValue);
-				}
-			}
-			catch(Exception ex)
-			{
-				ex.printStackTrace();
 			}
 		}
 	}
 	
 	public static class Reduce extends Reducer<Text,
-	Text,Text,Text>
+	Text,MatrixMultiply.IndexPair,DoubleWritable>
 	{		
 		boolean debug;
+		int K;
 		
 		public void setup(Context context)
 		{
 			Configuration conf = context.getConfiguration();
 			debug = Boolean.parseBoolean(conf.get("debug"));			
+			K = Integer.parseInt(conf.get("K"));
 		}
 		
 		public void reduce(Text key,
 				Iterable<Text> values,Context context) throws IOException, InterruptedException
 		{
-			Text outputValue;
-			double mij,njk;
+			double mik,nkj, pij;
 			String[] value;
-			List<Entry<Integer,Double>> listM
-			= new ArrayList<Entry<Integer,Double>>();
-			List<Entry<Integer,Double>> listN
-			= new ArrayList<Entry<Integer,Double>>();
+			java.util.Map<Integer,Double> mapM
+			= new HashMap<Integer,Double>();
+			java.util.Map<Integer,Double> mapN
+			= new HashMap<Integer,Double>();
 			for (Text val : values)
 			{
 				value = val.toString().split(",");
 				if (value[0].equals("M"))
 				{
-					listM.add(new SimpleEntry<Integer,Double>(Integer.parseInt(value[1]),Double.parseDouble(value[2])));					
+					mapM.put(Integer.parseInt(value[1]),Double.parseDouble(value[2]));					
 				}
 				else
 				{
-					listN.add(new SimpleEntry<Integer,Double>(Integer.parseInt(value[1]),Double.parseDouble(value[2])));										
+					mapN.put(Integer.parseInt(value[1]),Double.parseDouble(value[2]));										
 				}
 			}
 			if (debug)
 			{
-				System.out.println("Reduce M list" + listM);
-				System.out.println("Reduce N list" + listN);
+				System.out.println("Reduce M map" + mapM);
+				System.out.println("Reduce N map" + mapN);
 			}
-			outputValue = new Text();
-			for (Entry<Integer,Double> m : listM)
+			pij = 0.0;
+			for (int k=0; k<K;k++)
 			{
-				mij = m.getValue();
-				for (Entry<Integer,Double> n : listN)
+				mik = mapM.containsKey(k) ? mapM.get(k) : 0.0;
+				nkj = mapN.containsKey(k) ? mapN.get(k) : 0.0;
+				pij += mik * nkj;
+			}
+			
+			if (pij != 0.0)
+			{
+				MatrixMultiply.IndexPair indexPair = new MatrixMultiply.IndexPair();
+				String indices[] = key.toString().split(",");
+				indexPair.row = Integer.parseInt(indices[0]);
+				indexPair.col = Integer.parseInt(indices[1]);
+				DoubleWritable res = new DoubleWritable();
+				res.set(pij);
+			
+				try
 				{
-					njk = n.getValue();
-					outputValue.set(m.getKey()+"," + n.getKey() + "," + (mij*njk));
-					try
+					context.write(indexPair, res);
+					if (debug)
 					{
-						context.write(null, outputValue);
-						if (debug)
-						{
-							System.out.println("Reduce output " + outputValue);
-						}
+						System.out.println("Reduce output: i,j= " + key + "pij=" + res);
 					}
-					catch (Exception ex)
-					{
-						ex.printStackTrace();
-					}
+				}
+				catch (Exception ex)
+				{
+					ex.printStackTrace();
 				}
 			}
 		}
 	}
+
 	
 	@SuppressWarnings("deprecation")
 	public static void run(Configuration conf) throws Exception
 	{
-		Job pass1 = new Job(conf,"Matrix multiplication pass 1 of 2");
-		pass1.setJarByClass(TwoPassMatrixMultiplyFirstPass.class);
+		Job pass1 = new Job(conf,"Matrix multiplication pass 1 of 1");
+		pass1.setJarByClass(OnePassMatrixMultiply.class);
 		pass1.setInputFormatClass(SequenceFileInputFormat.class);
 		pass1.setOutputFormatClass(SequenceFileOutputFormat.class);
 		pass1.setMapperClass(Map.class);
 		pass1.setReducerClass(Reduce.class);
 		pass1.setMapOutputKeyClass(Text.class);
+		pass1.setMapOutputValueClass(Text.class);
+		pass1.setOutputKeyClass(MatrixMultiply.IndexPair.class);
+		pass1.setOutputValueClass(DoubleWritable.class);
+		
 		//The input files location
 		FileInputFormat.addInputPath(pass1, new Path(conf.get("inputPathM")));
 		FileInputFormat.addInputPath(pass1, new Path(conf.get("inputPathN")));
@@ -187,7 +198,7 @@ public class OnePassMatrixMultiply
 		//any previous setup
 		FileSystem fs = FileSystem.get(conf);
 		fs.delete(new Path(conf.get("outputPath")));
-		FileOutputFormat.setOutputPath(pass1, new Path(conf.get("tempPath")));
+		FileOutputFormat.setOutputPath(pass1, new Path(conf.get("outputPath")));
 		boolean passSuccess = pass1.waitForCompletion(true);
 		if (!passSuccess)
 		{

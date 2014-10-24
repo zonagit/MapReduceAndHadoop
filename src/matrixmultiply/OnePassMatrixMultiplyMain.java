@@ -1,3 +1,4 @@
+package matrixmultiply;
 import org.apache.hadoop.conf.Configuration;
 
 /**
@@ -9,7 +10,7 @@ import org.apache.hadoop.conf.Configuration;
  *and Chapter 2 of Mining of Massive Datasets
  *book.
  */
-public class TwoPassMatrixMultiplyMain 
+public class OnePassMatrixMultiplyMain 
 {	
 	public static boolean debug = false;
 	public static void main(String[] args) throws Exception 
@@ -42,16 +43,16 @@ public class TwoPassMatrixMultiplyMain
 					for (int j=0;j<J;j++)
 						System.out.println(N[k][j] + " "+MatrixMultiplyUtils.N[k][j]);
 			}
-			//Run first pass of Map reduce
+			//Run Map reduce
 			Configuration confMain = MatrixMultiplyUtils.conf;
+			confMain.set("I", I + "");
+			confMain.set("K", K +"");
+			confMain.set("J", J + "");
 			confMain.set("inputPathM", MatrixMultiplyUtils.INPUT_DIR_PATH + "M");
 			confMain.set("inputPathN", MatrixMultiplyUtils.INPUT_DIR_PATH + "N");
-			confMain.set("tempPath", MatrixMultiplyUtils.TEMP_DIR_PATH);
 			confMain.set("outputPath", MatrixMultiplyUtils.OUTPUT_DIR_PATH);				
 			confMain.set("debug", debug + "");
-			TwoPassMatrixMultiplyFirstPass.run(confMain);
-			//Run second pass of Map reduce
-			TwoPassMatrixMultiplySecondPass.run(confMain);
+			OnePassMatrixMultiply.run(confMain);
 			
 			//Check map reduce produces the right
 			//matrix multiply
