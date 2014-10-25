@@ -1,6 +1,64 @@
-To run the different mains from eclipse create a run/debug
-configuration then enter arguments for command line.
+There are 2 packages in this project:
 
+MatrixMultiply
+PageRank
+
+a) In MatrixMultiply there are 3 classes with a main method 
+
+To run the different mains from eclipse create a run/debug
+configuration for each then enter arguments for command line.
+
+or use the jar (to create a jar file from this project do from within 
+Eclipse
+
+Right Click the project->Export Java Jar file->Enter location
+and name of jar)
+
+To run one of the mains in the jar in a machine with hadoop 
+installed type
+
+./bin/hadoop jar jarname.jar ConversionMain true input_filename output_filename false path
+
+or 
+ 
+./bin/hadoop jar jarname.jar OnePassMatrixMultiplyMain 2 3 2 true
+
+or
+
+./bin/hadoop jar jarname.jar TwoPassMatrixMultiplyMain 2 3 2 true
+
+
+a.1) ConversionMain.java
+
+This converts a file from binary to Hadoop SequenceFile or the other way
+The command line arguments are
+
+tobinary input_filename output_filename debug path
+
+so to convert a given input_filename from binary to SequenceFile do
+
+false input_filename output_filename false path_where_to_put_output_filename
+
+to convert a given input_filename from SequenceFile to binary do
+
+true input_filename output_filename false path_where_to_put_output_filename
+
+if the path (last argument) is omitted the input and output files will be
+read/written to a folder specified in the constant INPUT_PATH_FOLDER defined
+at the top of ConversionMain.java
+  
+Note that the binary format consists of a first line with numrows numcols
+then each line after that is one entry of the matrix in the order 
+0 0
+0 1
+...
+0 numcols-1
+1 0
+1 1
+...
+1 numcols-1
+...
+ 
 The arguments for OnePassMatrixMultiplyMain.java
 and TwoPassMatrixMultiplyMain.java are the dimensions
 of the 2 matrices M (IxK) and N (KxJ) and whether debugging
@@ -11,18 +69,3 @@ pipeline)
 So enter say for the product of a 2x3 times a 3x2 matrix
 
 2 3 2 true
-
-To create a jar file from this project do from within 
-Eclipse
-
-Right Click the project->Export Java Jar file->Enter location
-and name of jar
-
-To run one of the mains in the jar in a machine with hadoop 
-installed type
-
-./bin/hadoop jar jarname.jar OnePassMatrixMultiplyMain 2 3 2 true
-
-or
-
-./bin/hadoop jar jarname.jar TwoPassMatrixMultiplyMain 2 3 2 true
