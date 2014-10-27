@@ -11,9 +11,9 @@ import org.apache.hadoop.io.SequenceFile;
 
 public class MatrixMultiplyUtils 
 {
-	public static final String INPUT_DIR_PATH = "/opt/hadoop-2.5.1/share/input/";
-	public static final String TEMP_DIR_PATH = "/opt/hadoop-2.5.1/share/temp/";
-	public static final String OUTPUT_DIR_PATH = "/opt/hadoop-2.5.1/share/output/";
+	public static String INPUT_DIR_PATH = "/opt/hadoop-2.5.1/share/input/";
+	public static String TEMP_DIR_PATH = "/opt/hadoop-2.5.1/share/temp/";
+	public static String OUTPUT_DIR_PATH = "/opt/hadoop-2.5.1/share/output/";
 	
 	public static double[][] M;
 	public static double[][] N;

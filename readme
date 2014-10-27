@@ -17,17 +17,17 @@ and name of jar)
 To run one of the mains in the jar in a machine with hadoop 
 installed type
 
-./bin/hadoop jar jarname.jar ConversionMain true input_filename output_filename false path
+./bin/hadoop jar jarname.jar matrixmultiply.ConversionMain true input_filename output_filename false path
 
 or 
  
-./bin/hadoop jar jarname.jar OnePassMatrixMultiplyMain 2 3 2 true
+./bin/hadoop jar jarname.jar matrixmultiply.OnePassMatrixMultiplyMain 2 3 2 true optional_input_path optional_output_path 
 
 or
 
-./bin/hadoop jar jarname.jar TwoPassMatrixMultiplyMain 2 3 2 true
+./bin/hadoop jar jarname.jar matrixmultiply.TwoPassMatrixMultiplyMain 2 3 2 true optional_input_path optional_output_path optional_temp_path
 
-
+(temp_path is the location where the output of step1 will be written to)
 a.1) ConversionMain.java
 
 This converts a file from binary to Hadoop SequenceFile or the other way
@@ -73,18 +73,18 @@ as no grouping since each group will just have one row/one column)
 
 So the arguments for 2 groups would be
 
-6 6 6 2 false
+6 6 6 2 false optional_input_path optional_output_path
 
 For non square matrices use 0 or -1 for the group argument
 So enter say for the product of a 2x3 times by 3x2 matrix
 
-2 3 2 -1 false
+2 3 2 -1 false optional_input_path optional_output_path
 
 a.2) No grouping was implemented for the 2 pass algorithm so the
 arguments for TwoPassMatrixMultiplyMain.java are just the dimensions
 of the 2 matrices
 
-2 3 2 false
+2 3 2 false optional_input_path optional_temp_path optional_output_path
 
 for the product of a matrix 2x3 by a matrix 3x2
 

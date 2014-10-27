@@ -24,7 +24,11 @@ public class OnePassMatrixMultiplyMain
 			int J = new Integer(args[2]);
 			int numGroups = new Integer(args[3]);
 			debug = new Boolean(args[4]);
-		
+			if (args.length >= 6)
+				MatrixMultiplyUtils.INPUT_DIR_PATH = args[5];
+			if (args.length >= 7)
+				MatrixMultiplyUtils.OUTPUT_DIR_PATH = args[6];
+			
 			MatrixMultiplyUtils.init();
 			MatrixMultiplyUtils.buildRandomMatrices(I, K, J);
 			

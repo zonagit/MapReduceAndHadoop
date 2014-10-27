@@ -23,7 +23,13 @@ public class TwoPassMatrixMultiplyMain
 			int K = new Integer(args[1]);
 			int J = new Integer(args[2]);
 			debug = new Boolean(args[3]);
-		
+			if (args.length >= 5)
+				MatrixMultiplyUtils.INPUT_DIR_PATH = args[4];
+			if (args.length >= 6)
+				MatrixMultiplyUtils.OUTPUT_DIR_PATH = args[5];
+			if (args.length >= 7)
+				MatrixMultiplyUtils.TEMP_DIR_PATH = args[6];
+			
 			MatrixMultiplyUtils.init();
 			MatrixMultiplyUtils.buildRandomMatrices(I, K, J);
 			
