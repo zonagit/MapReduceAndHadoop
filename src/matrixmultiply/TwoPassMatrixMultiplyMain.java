@@ -50,10 +50,12 @@ public class TwoPassMatrixMultiplyMain
 			confMain.set("tempPath", MatrixMultiplyUtils.TEMP_DIR_PATH);
 			confMain.set("outputPath", MatrixMultiplyUtils.OUTPUT_DIR_PATH);				
 			confMain.set("debug", debug + "");
+			long startTime = System.nanoTime();
 			TwoPassMatrixMultiplyFirstPass.run(confMain);
 			//Run second pass of Map reduce
 			TwoPassMatrixMultiplySecondPass.run(confMain);
-			
+			long endTime = System.nanoTime();
+			System.out.println("Runtime " + (endTime-startTime));
 			//Check map reduce produces the right
 			//matrix multiply
 			if (debug)

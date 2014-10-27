@@ -22,7 +22,8 @@ public class OnePassMatrixMultiplyMain
 			int I = new Integer(args[0]);
 			int K = new Integer(args[1]);
 			int J = new Integer(args[2]);
-			debug = new Boolean(args[3]);
+			int numGroups = new Integer(args[3]);
+			debug = new Boolean(args[4]);
 		
 			MatrixMultiplyUtils.init();
 			MatrixMultiplyUtils.buildRandomMatrices(I, K, J);
@@ -48,11 +49,17 @@ public class OnePassMatrixMultiplyMain
 			confMain.set("I", I + "");
 			confMain.set("K", K +"");
 			confMain.set("J", J + "");
+			confMain.set("numGroups", numGroups + "");
 			confMain.set("inputPathM", MatrixMultiplyUtils.INPUT_DIR_PATH + "M");
 			confMain.set("inputPathN", MatrixMultiplyUtils.INPUT_DIR_PATH + "N");
 			confMain.set("outputPath", MatrixMultiplyUtils.OUTPUT_DIR_PATH);				
 			confMain.set("debug", debug + "");
+			long startTime = System.nanoTime();
+			
 			OnePassMatrixMultiply.run(confMain);
+			
+			long endTime = System.nanoTime();
+			System.out.println("Runtime " + (endTime-startTime));
 			
 			//Check map reduce produces the right
 			//matrix multiply

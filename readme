@@ -59,13 +59,34 @@ then each line after that is one entry of the matrix in the order
 1 numcols-1
 ...
  
-The arguments for OnePassMatrixMultiplyMain.java
-and TwoPassMatrixMultiplyMain.java are the dimensions
-of the 2 matrices M (IxK) and N (KxJ) and whether debugging
-should be enabled or not (if debug is on it will print out 
+a.2) The arguments for OnePassMatrixMultiplyMain.java
+are the dimensions
+of the 2 matrices M (IxK) and N (KxJ), the number of groups and whether 
+debugging should be enabled or not (if debug is on it will print out 
 information along the different stages of the map reduce 
 pipeline)
  
-So enter say for the product of a 2x3 times a 3x2 matrix
+The grouping is only implemented for square matrices and additionally
+the number of groups should be a multiple of the size of the square
+matrices. So for 6x6 matrices use 1,2,3,6 groups (6 groups is the same
+as no grouping since each group will just have one row/one column)
 
-2 3 2 true
+So the arguments for 2 groups would be
+
+6 6 6 2 false
+
+For non square matrices use 0 or -1 for the group argument
+So enter say for the product of a 2x3 times by 3x2 matrix
+
+2 3 2 -1 false
+
+a.2) No grouping was implemented for the 2 pass algorithm so the
+arguments for TwoPassMatrixMultiplyMain.java are just the dimensions
+of the 2 matrices
+
+2 3 2 false
+
+for the product of a matrix 2x3 by a matrix 3x2
+
+In both the one pass and the 2 pass algorithms the matrices are dense
+i.e. none of their entries is zero.
