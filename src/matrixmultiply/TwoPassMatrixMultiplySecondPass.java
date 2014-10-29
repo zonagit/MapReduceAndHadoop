@@ -76,10 +76,10 @@ public class TwoPassMatrixMultiplySecondPass
 		{
 			//sum over the same set of keys
 			for (Text value : values)
-			{
+			{				
 				String[] indicesAndValue = value.toString().split(",");
 				String k = indicesAndValue[0] + "," + indicesAndValue[1];
-				double sum = 0.0;
+				double sum = 0.0;				
 				if (pik.get(k) == null)
 				{
 					sum = 0.0;					
@@ -91,10 +91,6 @@ public class TwoPassMatrixMultiplySecondPass
 				sum += Double.parseDouble(indicesAndValue[2]);
 				
 				pik.put(k, sum);
-			}
-			//write the matrix product to file	
-			for (String k : pik.keySet())
-			{
 				MatrixMultiply.IndexPair indexPair = new MatrixMultiply.IndexPair();
 				String indices[] = k.split(",");
 				indexPair.row = Integer.parseInt(indices[0]);
@@ -102,7 +98,7 @@ public class TwoPassMatrixMultiplySecondPass
 				DoubleWritable res = new DoubleWritable();
 				res.set(Double.parseDouble(pik.get(k).toString()));
 				context.write(indexPair, res);
-			}		
+			}				
 		}
 	}
 	

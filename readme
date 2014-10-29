@@ -28,6 +28,7 @@ or
 ./bin/hadoop jar jarname.jar matrixmultiply.TwoPassMatrixMultiplyMain 2 3 2 true optional_input_path optional_output_path optional_temp_path
 
 (temp_path is the location where the output of step1 will be written to)
+
 a.1) ConversionMain.java
 
 This converts a file from binary to Hadoop SequenceFile or the other way
@@ -64,19 +65,25 @@ are the dimensions
 of the 2 matrices M (IxK) and N (KxJ), the number of groups and whether 
 debugging should be enabled or not (if debug is on it will print out 
 information along the different stages of the map reduce 
-pipeline)
+pipeline, including at the end if the map reduce matrix multiplication matches
+regular matrix multiplication)
  
-The grouping is only implemented for square matrices and additionally
-the number of groups should be a multiple of the size of the square
-matrices. So for 6x6 matrices use 1,2,3,6 groups (6 groups is the same
-as no grouping since each group will just have one row/one column)
+The number of groups should be a multiple of the size of both
+matrices. So for 6x4x2 matrices use 2 groups, for
+100x 100x1000 matrices use 5,10,20,25,50,100 (100 means that each row in 
+the first matrix is in its own group and there are 100 groups of 10 columns each
+in the second matrix).
+  
+ For 50x50x50 matrices (square matrices) note that choosing a grouping of
+ 1 means all rows/columns are in one group.
 
 So the arguments for 2 groups would be
 
 6 6 6 2 false optional_input_path optional_output_path
 
-For non square matrices use 0 or -1 for the group argument
-So enter say for the product of a 2x3 times by 3x2 matrix
+If not using grouping use 0 or -1 for the group argument
+So enter say for the product of a 2x3 times by 3x2 matrix with 
+no grouping
 
 2 3 2 -1 false optional_input_path optional_output_path
 
@@ -89,4 +96,20 @@ of the 2 matrices
 for the product of a matrix 2x3 by a matrix 3x2
 
 In both the one pass and the 2 pass algorithms the matrices are dense
-i.e. none of their entries is zero.
+i.e. none of their entries is zero. Also in both cases those matrices are
+written to 2 different files called M and N in the input folder which are 
+read by the mapper/first mapper.
+
+Some examples of command line cmds  I ran in the apt cluster
+
+One pass
+-----------
+/usr/local/hadoop-2.5.0/bin/hadoop jar /home/u0082100/matrixmultiply.jar matrixmultiply.OnePassMatrixMultiplyMain 100 1000 1000 10 false /user/u0082100/input/ /user/u0082100/output/
+
+Two Pass
+---------
+/usr/local/hadoop-2.5.0/bin/hadoop jar /home/u0082100/matrixmultiply.jar matrixmultiply.TwoPassMatrixMultiplyMain 100 100 1000 false /user/u0082100/input/ /user/u0082100/output/ /user/u0082100/temp
+
+Kill a job
+-----------
+/usr/local/hadoop-2.5.0/bin/hadoop job -kill job_1412285424336_1065

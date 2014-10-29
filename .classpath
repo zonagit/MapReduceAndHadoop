@@ -89,5 +89,11 @@
 	<classpathentry kind="lib" path="/opt/hadoop-2.5.1/share/playground/MapReduceAndHadoop/lib/hadoop-yarn-server-web-proxy-2.5.1.jar"/>
 	<classpathentry kind="lib" path="/opt/hadoop-2.5.1/share/playground/MapReduceAndHadoop/lib/hadoop-mapreduce-client-app-2.5.1.jar"/>
 	<classpathentry kind="lib" path="/opt/hadoop-2.5.1/share/playground/MapReduceAndHadoop/lib/hadoop-mapreduce-client-common-2.5.1.jar"/>
+	<classpathentry kind="lib" path="/opt/hadoop-2.5.1/share/playground/MapReduceAndHadoop/lib/webgraph-3.4.2.jar"/>
+	<classpathentry kind="lib" path="/opt/hadoop-2.5.1/share/playground/MapReduceAndHadoop/lib/dsiutils-2.2.2.jar"/>
+	<classpathentry kind="lib" path="/opt/hadoop-2.5.1/share/playground/MapReduceAndHadoop/lib/fastutil-6.5.15.jar"/>
+	<classpathentry kind="lib" path="/opt/hadoop-2.5.1/share/playground/MapReduceAndHadoop/lib/mg4j-4.0.3.jar"/>
+	<classpathentry kind="lib" path="/opt/hadoop-2.5.1/share/playground/MapReduceAndHadoop/lib/sux4j-3.2.1.jar"/>
+	<classpathentry kind="lib" path="/opt/hadoop-2.5.1/share/playground/MapReduceAndHadoop/lib/webgraph/jsap-2.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
