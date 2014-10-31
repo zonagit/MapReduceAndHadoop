@@ -1,7 +1,7 @@
 There are 2 packages in this project:
 
-MatrixMultiply
-PageRank
+matrixmultiply
+pagerank
 
 a) In MatrixMultiply there are 3 classes with a main method 
 
@@ -100,6 +100,36 @@ i.e. none of their entries is zero. Also in both cases those matrices are
 written to 2 different files called M and N in the input folder which are 
 read by the mapper/first mapper.
 
+b) In the package pagerank there are two mains IdsToLabelsMain.java and
+ PageRankMain.java.
+ 
+b.1) IdsToLabelsMain.java accepts as arguments
+
+basenamelocation nodeid1 nodeid2 ... nodeidn
+
+and then reads basename.fcl and outputs the labels for the requested nodeids
+
+b.2) PageRanokMain.java
+
+Run it with 3 arguments: the folder and basename containing the 
+.properties and .graph files for that basename; the output folder and
+the sort folder.
+
+The output folder contains subfolders one for each iteration in pagerank.
+The sort folder reads the last such subfolder, sorts by page rank
+and outputs the result (in increasing page rank so the last line of the
+file corresponds to the largest page rank node) to the sort folder.
+
+For example to run page rank on the enron dataset from the jar I ran
+(from /mnt/scratch/u0082100/)
+
+/usr/local/hadoop-2.5.0/bin/hadoop jar MapReduceAndHadoop.jar  pagerank.PageRankMain pagerank/enron /user/u0082100/output /user/u0082100/sort
+
+To find the top 30 page ranks I then ran
+
+/usr/local/hadoop-2.5.0/bin/hdfs dfs -cat /user/u0082100/sort/part* |  tail  -n 30
+
+
 Some examples of command line cmds  I ran in the apt cluster
 
 One pass
@@ -113,3 +143,18 @@ Two Pass
 Kill a job
 -----------
 /usr/local/hadoop-2.5.0/bin/hadoop job -kill job_1412285424336_1065
+
+
+Page Rank with taxation (running from /mnt/scratch/u0082100/)
+-----------------------
+/usr/local/hadoop-2.5.0/bin/hadoop jar MapReduceAndHadoop.jar  pagerank.PageRankMain pagerank/enron /user/u0082100/output /user/u0082100/sort
+
+/usr/local/hadoop-2.5.0/bin/hadoop jar MapReduceAndHadoop.jar  pagerank.PageRankMain pagerank/dblp-2011-hc /user/u0082100/output /user/u0082100/sort
+
+/usr/local/hadoop-2.5.0/bin/hadoop jar MapReduceAndHadoop.jar  pagerank.PageRankMain pagerank/hollywood-2011-hc /user/u0082100/output /user/u0082100/sort
+
+/usr/local/hadoop-2.5.0/bin/hadoop jar MapReduceAndHadoop.jar  pagerank.PageRankMain pagerank/webbase-2001-hc /user/u0082100/output /user/u0082100/sort
+
+Retrieve the top 30 pageranks
+------------------------------
+/usr/local/hadoop-2.5.0/bin/hdfs dfs -cat /user/u0082100/sort/part* |  tail  -n 30

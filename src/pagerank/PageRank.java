@@ -163,7 +163,7 @@ public class PageRank
 		 conf.setInt(Reduce.CONF_NUM_NODES_GRAPH, numNodes);
 
 		 Job job = new Job(conf);
-		 job.setJarByClass(Main.class);
+		 job.setJarByClass(PageRank.class);
 		 job.setMapperClass(Map.class);
 		 job.setReducerClass(Reduce.class);
 		 

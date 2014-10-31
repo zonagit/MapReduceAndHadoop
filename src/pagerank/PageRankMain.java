@@ -27,12 +27,25 @@ public class PageRankMain
 	{
 		String basename = args[0];
 		String outputDir = args[1];
+		String sortDir = args[2];
 		
 		loadGraph(basename);
 		
-		iterate(basename,outputDir);
+		Path inputPath = iterate(basename,outputDir);
+		
+		sort(inputPath, new Path(sortDir));
 		
 	}
+	
+	public static void sort(Path inputPath,Path sortPath) throws ClassNotFoundException, IOException, InterruptedException
+	{
+		Configuration conf = new Configuration();
+		sortPath.getFileSystem(conf).delete(sortPath, true);
+		//sortPath.getFileSystem(conf).mkdirs(sortPath);
+		
+		PageRankSort.rankOrdering(inputPath, sortPath);
+	}
+	
 	
 	public static void loadGraph(String basename) throws IOException
 	{
@@ -40,7 +53,7 @@ public class PageRankMain
 		numNodes = graph.numNodes();		
 	}
 	
-	public static void iterate(String input, String output) throws Exception
+	public static Path iterate(String input, String output) throws Exception
 	{
 		Configuration conf = new Configuration();
 		Path outputPath = new Path(output);
@@ -75,7 +88,9 @@ public class PageRankMain
 			}
 			inputPath = jobOutputPath;
 			iter++;	
-		}	
+		}
+		
+		return new Path(outputPath, String.valueOf(iter));
 	}
 	
 	
