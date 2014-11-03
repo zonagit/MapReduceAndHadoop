@@ -109,7 +109,14 @@ basenamelocation nodeid1 nodeid2 ... nodeidn
 
 and then reads basename.fcl and outputs the labels for the requested nodeids
 
-b.2) PageRanokMain.java
+Here it is how I ran it from the command line (the fastutil, dsiutils and jsap jars
+should be at the same location as this jar MapReduceAndHadoop.jar and
+webbase-2001.fcl should be at the same location as well; all these jars are under the lib
+folder of the git commit)
+
+/mnt/scratch/u0082100/pagerank$ java -classpath "fastutil-6.5.15.jar:dsiutils-2.2.2.jar:jsap-2.1.jar:MapReduceAndHadoop.jar" pagerank.IdsToLabelsMain webbase-2001 93799279 38758143 69428479 112916492 111078997 4224907 30031331 20898292 112074159 30033865
+
+b.2) PageRankMain.java
 
 Run it with 3 arguments: the folder and basename containing the 
 .properties and .graph files for that basename; the output folder and
@@ -129,7 +136,24 @@ To find the top 30 page ranks I then ran
 
 /usr/local/hadoop-2.5.0/bin/hdfs dfs -cat /user/u0082100/sort/part* |  tail  -n 30
 
+b.3) Trust rank: Run PageRankMain.java with 4 arguments. The first 3 
+arguments are similar to b.2) above: the location of the .properties,.graph files,
+the output and sort dirs (use different output and sort dirs for
+trust rank). The 4th argument is the path to a file 
+containing the top N page ranks (as produced by b.2 above
+namely the tail command). These will
+form the trusted set.
 
+I have one of these files under the folder webgraphdata, called enronTop300 
+To build it I ran
+
+/usr/local/hadoop-2.5.0/bin/hdfs dfs -cat /user/u0082100/sort/part* |  tail  -n 300
+
+b.4) Spam mass: Run SpamMassMain.java with 3 arguments
+
+1: the location of the last iteration of pagerank 
+2: the location of the last iteration of trustpagerank
+3: the location of the output of spam mass calculation
 Some examples of command line cmds  I ran in the apt cluster
 
 One pass
@@ -158,3 +182,6 @@ Page Rank with taxation (running from /mnt/scratch/u0082100/)
 Retrieve the top 30 pageranks
 ------------------------------
 /usr/local/hadoop-2.5.0/bin/hdfs dfs -cat /user/u0082100/sort/part* |  tail  -n 30
+
+Finally there is a jar file called MapReduceAndHadoop.jar that can be run
+as described above.
