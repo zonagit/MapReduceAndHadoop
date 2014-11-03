@@ -3,9 +3,14 @@ package pagerank;
 import it.unimi.dsi.webgraph.ImmutableGraph;
 import it.unimi.dsi.webgraph.NodeIterator;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.hadoop.conf.Configuration;
@@ -20,21 +25,40 @@ import org.apache.hadoop.fs.Path;
 public class PageRankMain 
 {
 	
-	public static ImmutableGraph graph;
-	public static int numNodes;
+	private static ImmutableGraph graph;
+	private static int numNodes;
+	private static boolean trustRank = false;
+	private static Set<Integer> trustedSet;
 	
 	public static void main (String[] args) throws Exception
 	{
 		String basename = args[0];
 		String outputDir = args[1];
 		String sortDir = args[2];
-		
+		if (args.length > 3)
+		{
+			trustRank = true;
+			trustedSet = new HashSet<Integer>();
+			loadTrustedSet(args[3]);
+		}
 		loadGraph(basename);
 		
 		Path inputPath = iterate(basename,outputDir);
 		
 		sort(inputPath, new Path(sortDir));
 		
+	}
+	
+	public static void loadTrustedSet(String tsfilename) throws NumberFormatException, IOException
+	{
+		BufferedReader br = new BufferedReader(new FileReader(new File(tsfilename)));
+		String line;
+		while ((line = br.readLine()) != null)
+		{
+			String[] parts = line.split("\t");
+			trustedSet.add(Integer.parseInt(parts[1]));
+		}	
+		br.close();
 	}
 	
 	public static void sort(Path inputPath,Path sortPath) throws ClassNotFoundException, IOException, InterruptedException
@@ -78,16 +102,30 @@ public class PageRankMain
 			System.out.println("=  Output path:  " + jobOutputPath);
 			System.out.println("======================================");
 			
-			if (PageRank.calcPageRank(inputPath, jobOutputPath, numNodes) <
-					desiredConvergence) 
+			if (!trustRank)
 			{
-				System.out.println(
+				if (PageRank.calcPageRank(inputPath, jobOutputPath, numNodes) <
+					desiredConvergence) 
+				{
+					System.out.println(
 		            "Convergence is below " + desiredConvergence +
 		                ", we're done");
-		        break;
+					break;
+				}
 			}
+			else
+			{
+				if (TrustPageRank.calcPageRank(inputPath, jobOutputPath, numNodes, trustedSet) <
+						desiredConvergence) 
+					{
+						System.out.println(
+			            "Convergence is below " + desiredConvergence +
+			                ", we're done");
+						break;
+					}
+			}	
 			inputPath = jobOutputPath;
-			iter++;	
+			iter++;				
 		}
 		
 		return new Path(outputPath, String.valueOf(iter));

@@ -1,0 +1,209 @@
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/hadoop-2.5.1/share/playground/MapReduceAndHadoop/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/hadoop-2.5.1/share/playground/MapReduceAndHadoop/lib/webgraph/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+log4j:WARN No appenders could be found for logger (org.apache.hadoop.metrics2.lib.MutableMetricsFactory).
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+======================================
+=  Iteration:    1
+=  Input path:   /opt/hadoop-2.5.1/share/playground/MapReduceAndHadoop/webgraphdata/enron-hc.txt
+=  Output path:  /opt/hadoop-2.5.1/output/1
+======================================
+======================================
+=  Num nodes:           69244
+=  Summed convergence:  29395570
+=  Convergence:         0.4245215469932413
+======================================
+======================================
+=  Iteration:    2
+=  Input path:   /opt/hadoop-2.5.1/output/1
+=  Output path:  /opt/hadoop-2.5.1/output/2
+======================================
+======================================
+=  Num nodes:           69244
+=  Summed convergence:  13952031
+=  Convergence:         0.20149082953035644
+======================================
+======================================
+=  Iteration:    3
+=  Input path:   /opt/hadoop-2.5.1/output/2
+=  Output path:  /opt/hadoop-2.5.1/output/3
+======================================
+======================================
+=  Num nodes:           69244
+=  Summed convergence:  10384448
+=  Convergence:         0.14996892149500318
+======================================
+======================================
+=  Iteration:    4
+=  Input path:   /opt/hadoop-2.5.1/output/3
+=  Output path:  /opt/hadoop-2.5.1/output/4
+======================================
+======================================
+=  Num nodes:           69244
+=  Summed convergence:  8555315
+=  Convergence:         0.12355315984056381
+======================================
+======================================
+=  Iteration:    5
+=  Input path:   /opt/hadoop-2.5.1/output/4
+=  Output path:  /opt/hadoop-2.5.1/output/5
+======================================
+======================================
+=  Num nodes:           69244
+=  Summed convergence:  7312072
+=  Convergence:         0.10559863670498527
+======================================
+======================================
+=  Iteration:    6
+=  Input path:   /opt/hadoop-2.5.1/output/5
+=  Output path:  /opt/hadoop-2.5.1/output/6
+======================================
+======================================
+=  Num nodes:           69244
+=  Summed convergence:  6246712
+=  Convergence:         0.0902130437294206
+======================================
+======================================
+=  Iteration:    7
+=  Input path:   /opt/hadoop-2.5.1/output/6
+=  Output path:  /opt/hadoop-2.5.1/output/7
+======================================
+======================================
+=  Num nodes:           69244
+=  Summed convergence:  5344416
+=  Convergence:         0.07718236959158917
+======================================
+======================================
+=  Iteration:    8
+=  Input path:   /opt/hadoop-2.5.1/output/7
+=  Output path:  /opt/hadoop-2.5.1/output/8
+======================================
+======================================
+=  Num nodes:           69244
+=  Summed convergence:  4564449
+=  Convergence:         0.06591833227427647
+======================================
+======================================
+=  Iteration:    9
+=  Input path:   /opt/hadoop-2.5.1/output/8
+=  Output path:  /opt/hadoop-2.5.1/output/9
+======================================
+======================================
+=  Num nodes:           69244
+=  Summed convergence:  3896548
+=  Convergence:         0.05627271676968401
+======================================
+======================================
+=  Iteration:    10
+=  Input path:   /opt/hadoop-2.5.1/output/9
+=  Output path:  /opt/hadoop-2.5.1/output/10
+======================================
+======================================
+=  Num nodes:           69244
+=  Summed convergence:  3323645
+=  Convergence:         0.04799903240713997
+======================================
+======================================
+=  Iteration:    11
+=  Input path:   /opt/hadoop-2.5.1/output/10
+=  Output path:  /opt/hadoop-2.5.1/output/11
+======================================
+======================================
+=  Num nodes:           69244
+=  Summed convergence:  2833458
+=  Convergence:         0.04091990641788458
+======================================
+======================================
+=  Iteration:    12
+=  Input path:   /opt/hadoop-2.5.1/output/11
+=  Output path:  /opt/hadoop-2.5.1/output/12
+======================================
+======================================
+=  Num nodes:           69244
+=  Summed convergence:  2414623
+=  Convergence:         0.03487122349950898
+======================================
+======================================
+=  Iteration:    13
+=  Input path:   /opt/hadoop-2.5.1/output/12
+=  Output path:  /opt/hadoop-2.5.1/output/13
+======================================
+======================================
+=  Num nodes:           69244
+=  Summed convergence:  2056683
+=  Convergence:         0.029701966957425913
+======================================
+======================================
+=  Iteration:    14
+=  Input path:   /opt/hadoop-2.5.1/output/13
+=  Output path:  /opt/hadoop-2.5.1/output/14
+======================================
+======================================
+=  Num nodes:           69244
+=  Summed convergence:  1751253
+=  Convergence:         0.025291043267286695
+======================================
+======================================
+=  Iteration:    15
+=  Input path:   /opt/hadoop-2.5.1/output/14
+=  Output path:  /opt/hadoop-2.5.1/output/15
+======================================
+======================================
+=  Num nodes:           69244
+=  Summed convergence:  1490736
+=  Convergence:         0.021528738952111375
+======================================
+======================================
+=  Iteration:    16
+=  Input path:   /opt/hadoop-2.5.1/output/15
+=  Output path:  /opt/hadoop-2.5.1/output/16
+======================================
+======================================
+=  Num nodes:           69244
+=  Summed convergence:  1268848
+=  Convergence:         0.018324302466639707
+======================================
+======================================
+=  Iteration:    17
+=  Input path:   /opt/hadoop-2.5.1/output/16
+=  Output path:  /opt/hadoop-2.5.1/output/17
+======================================
+======================================
+=  Num nodes:           69244
+=  Summed convergence:  1079610
+=  Convergence:         0.015591386979377272
+======================================
+======================================
+=  Iteration:    18
+=  Input path:   /opt/hadoop-2.5.1/output/17
+=  Output path:  /opt/hadoop-2.5.1/output/18
+======================================
+======================================
+=  Num nodes:           69244
+=  Summed convergence:  918647
+=  Convergence:         0.013266810120732483
+======================================
+======================================
+=  Iteration:    19
+=  Input path:   /opt/hadoop-2.5.1/output/18
+=  Output path:  /opt/hadoop-2.5.1/output/19
+======================================
+======================================
+=  Num nodes:           69244
+=  Summed convergence:  781620
+=  Convergence:         0.011287909421754954
+======================================
+======================================
+=  Iteration:    20
+=  Input path:   /opt/hadoop-2.5.1/output/19
+=  Output path:  /opt/hadoop-2.5.1/output/20
+======================================
+======================================
+=  Num nodes:           69244
+=  Summed convergence:  664746
+=  Convergence:         0.009600051990064121
+======================================
+Convergence is below 0.01, we're done

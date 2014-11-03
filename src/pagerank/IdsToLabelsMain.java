@@ -5,7 +5,15 @@ import it.unimi.dsi.fastutil.io.BinIO;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * 
+ * Converts node ids of webgraphs to labels/urls 
+ * using the basename.fcl file (webbase-2001.fcl, hollywood-2011.fcl, 
+ * dbpl-2011.fcl)
+ * 
+ * Take a look at the readme section b.1) for how to run it
+ * 
+ */
 public class IdsToLabelsMain {
 
 	public static void main(String[] args) throws ClassNotFoundException, IOException 
